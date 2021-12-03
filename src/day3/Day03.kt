@@ -36,36 +36,26 @@ fun countZerosAndOnes(bitMatrix: List<CharArray>): List<List<BitCounter>> {
 }
 
 fun part1(bitMatrix: List<CharArray>) {
+    val zerosAndOnes = countZerosAndOnes(bitMatrix)
     val colSize = bitMatrix[0].size-1
-    val rowSize = bitMatrix.size-1
     val gammaRate = CharArray(colSize+1)
     val epsilonRate = CharArray(colSize+1)
 
-    var zero = 0
-    var one = 0
+    zerosAndOnes.forEachIndexed {
+        index, zeroAndOne ->
+        val zeroCounter = zeroAndOne[0].counter
+        val oneCounter = zeroAndOne[1].counter
 
-    for (col in 0..colSize) {
-        for(row in 0..rowSize) {
-            when (bitMatrix[row][col]){
-                '1' -> one += 1
-                '0' -> zero += 1
-            }
-        }
-
-        if(one > zero) {
-            gammaRate[col] = '1'
-            epsilonRate[col] = '0'
+        if(oneCounter > zeroCounter) {
+            gammaRate[index] = '1'
+            epsilonRate[index] = '0'
         }else {
-            gammaRate[col] = '0'
-            epsilonRate[col] = '1'
+            gammaRate[index] = '0'
+            epsilonRate[index] = '1'
         }
-
-        zero = 0
-        one = 0
     }
     val gamma = String(gammaRate).toInt(2)
     val epsilon = String(epsilonRate).toInt(2)
-
     println(gamma * epsilon)
 }
 
